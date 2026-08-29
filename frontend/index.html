@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SarkariSahay AI — Government schemes, explained honestly</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<main id="main">
+  <section class="container hero">
+    <div>
+      <div class="hero__eyebrow" data-i18n="hero_eyebrow"></div>
+      <h1 data-i18n="hero_title"></h1>
+      <p class="hero__lede" data-i18n="hero_lede"></p>
+      <div class="hero__ctas">
+        <a href="form.html" class="btn btn--primary" data-i18n="cta_primary"></a>
+        <a href="#flow" class="btn btn--ghost" data-i18n="cta_secondary"></a>
+      </div>
+    </div>
+    <div id="hero-stamp"></div>
+  </section>
+
+  <section class="container section">
+    <div class="section-head">
+      <div class="kicker">WHAT IT DOES</div>
+      <h2>Six fields in, a verified case file out</h2>
+      <p>Age, state, occupation, income and category — that's all it takes. SarkariSahay AI does the rest, and shows its work.</p>
+    </div>
+    <div class="card-grid">
+      <div class="dossier-card">
+        <h3>Simple input</h3>
+        <p>Age, state, occupation, income &amp; category — student, farmer, job seeker, or other.</p>
+      </div>
+      <div class="dossier-card dossier-card--marigold">
+        <h3>AI-powered matching</h3>
+        <p>Matches your profile against a curated database of real government schemes.</p>
+      </div>
+      <div class="dossier-card dossier-card--green">
+        <h3>Clear eligibility reasoning</h3>
+        <p>Not a plain yes/no — a full explanation of exactly why you qualify, or don't yet.</p>
+      </div>
+      <div class="dossier-card">
+        <h3>Document checklist</h3>
+        <p>The exact paperwork required for each scheme. Zero confusion, zero missed steps.</p>
+      </div>
+      <div class="dossier-card dossier-card--marigold">
+        <h3>Source-verified answers</h3>
+        <p>Every claim is grounded in official scheme data, so it can be checked — and AI hallucination is kept out.</p>
+      </div>
+      <div class="dossier-card dossier-card--green">
+        <h3>Multilingual</h3>
+        <p>Hindi, English, or Hinglish — "Mere liye kaunsi scheme hai?" just works.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="flow" class="container section">
+    <div class="section-head">
+      <div class="kicker">FLOW OF SOLUTION</div>
+      <h2>One flow, one trustworthy answer</h2>
+      <p>From raw citizen data to a verified, document-ready scheme match — fully automated.</p>
+    </div>
+    <div class="ledger">
+      <div class="ledger__step"><span class="ledger__num">01</span><h4>User info input</h4><p>Age, state, occupation, income</p></div>
+      <div class="ledger__step"><span class="ledger__num">02</span><h4>Rule-based match</h4><p>Checked against the scheme database</p></div>
+      <div class="ledger__step"><span class="ledger__num">03</span><h4>Matched schemes</h4><p>Ranked, relevant results</p></div>
+      <div class="ledger__step"><span class="ledger__num">04</span><h4>AI explanation</h4><p>Why you're eligible, grounded in facts</p></div>
+      <div class="ledger__step"><span class="ledger__num">05</span><h4>Documents</h4><p>The exact checklist needed</p></div>
+      <div class="ledger__step"><span class="ledger__num">06</span><h4>Apply</h4><p>Step-by-step guidance</p></div>
+    </div>
+  </section>
+
+  <section class="container section" style="padding-bottom:80px;">
+    <div class="section-head" style="text-align:center; margin: 0 auto;">
+      <h2>Ready to see what you qualify for?</h2>
+      <p style="margin: 0 auto 20px;">It takes under a minute, and nothing is stored beyond this session.</p>
+      <a href="form.html" class="btn btn--primary" data-i18n="cta_primary"></a>
+    </div>
+  </section>
+</main>
+
+<script src="js/main.js"></script>
+<script>
+  SSAI.mountChrome("home");
+  document.getElementById("hero-stamp").innerHTML = SSAI.stampSVG({ eligible: true });
+</script>
+</body>
+</html>

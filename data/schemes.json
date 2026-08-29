@@ -1,0 +1,496 @@
+[
+  {
+    "id": "pm-kisan",
+    "name_en": "PM-KISAN (Pradhan Mantri Kisan Samman Nidhi)",
+    "name_hi": "पीएम-किसान सम्मान निधि",
+    "category": "Farmer",
+    "short_desc_en": "Income support of ₹6,000 per year, paid in three installments, to landholding farmer families.",
+    "short_desc_hi": "भूमिधारक किसान परिवारों को हर साल ₹6,000 की आय सहायता, तीन किस्तों में।",
+    "ministry": "Ministry of Agriculture & Farmers Welfare",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": null,
+      "gender": null,
+      "max_income_annual": null,
+      "occupations": [
+        "farmer"
+      ],
+      "states": [
+        "All"
+      ],
+      "social_categories": [
+        "Any"
+      ]
+    },
+    "documents": [
+      "Aadhaar card",
+      "Land ownership records (Khatauni/Khasra)",
+      "Bank account passbook (linked to Aadhaar)",
+      "Passport-size photograph"
+    ],
+    "apply_steps": [
+      "Visit the PM-KISAN portal or nearest Common Service Centre (CSC).",
+      "Register with Aadhaar number and land record details.",
+      "Submit self-declaration of landholding.",
+      "Get e-KYC done and wait for verification by the local revenue officer."
+    ],
+    "source": {
+      "name": "pmkisan.gov.in",
+      "url": "https://pmkisan.gov.in"
+    }
+  },
+  {
+    "id": "ayushman-bharat",
+    "name_en": "Ayushman Bharat – PM Jan Arogya Yojana (PM-JAY)",
+    "name_hi": "आयुष्मान भारत – पीएम जन आरोग्य योजना",
+    "category": "Health",
+    "short_desc_en": "Free health cover of ₹5 lakh per family per year for secondary and tertiary hospitalisation.",
+    "short_desc_hi": "परिवार को प्रति वर्ष ₹5 लाख तक का निःशुल्क स्वास्थ्य बीमा कवर।",
+    "ministry": "Ministry of Health & Family Welfare",
+    "eligibility": {
+      "min_age": null,
+      "max_age": null,
+      "gender": null,
+      "max_income_annual": 250000,
+      "occupations": [
+        "unorganized_worker",
+        "farmer",
+        "job_seeker",
+        "other"
+      ],
+      "states": [
+        "All"
+      ],
+      "social_categories": [
+        "Any"
+      ]
+    },
+    "documents": [
+      "Aadhaar card",
+      "Ration card or SECC household ID",
+      "Income certificate (if not in SECC database)",
+      "Mobile number for OTP verification"
+    ],
+    "apply_steps": [
+      "Check eligibility on the PM-JAY website using your ration card or Aadhaar.",
+      "Visit the nearest empanelled hospital or Common Service Centre.",
+      "Complete e-KYC to generate your Ayushman card.",
+      "Use the card for cashless treatment at any empanelled hospital."
+    ],
+    "source": {
+      "name": "pmjay.gov.in",
+      "url": "https://pmjay.gov.in"
+    }
+  },
+  {
+    "id": "pmay",
+    "name_en": "Pradhan Mantri Awas Yojana (PMAY)",
+    "name_hi": "प्रधानमंत्री आवास योजना",
+    "category": "Housing",
+    "short_desc_en": "Financial assistance and interest subsidy to help economically weaker and low-income families build or buy a home.",
+    "short_desc_hi": "आर्थिक रूप से कमजोर और निम्न आय वर्ग के परिवारों को घर बनाने या खरीदने में सहायता।",
+    "ministry": "Ministry of Housing & Urban Affairs",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": null,
+      "gender": null,
+      "max_income_annual": 1800000,
+      "occupations": [
+        "Any"
+      ],
+      "states": [
+        "All"
+      ],
+      "social_categories": [
+        "Any"
+      ]
+    },
+    "documents": [
+      "Aadhaar card",
+      "Income certificate",
+      "Proof that applicant or family does not own a pucca house",
+      "Bank account details"
+    ],
+    "apply_steps": [
+      "Check your eligibility category (EWS/LIG/MIG) on the PMAY portal.",
+      "Fill the online application with Aadhaar and income details.",
+      "Upload supporting documents.",
+      "Track application status using your application/Aadhaar number."
+    ],
+    "source": {
+      "name": "pmaymis.gov.in",
+      "url": "https://pmaymis.gov.in"
+    }
+  },
+  {
+    "id": "sukanya-samriddhi",
+    "name_en": "Sukanya Samriddhi Yojana",
+    "name_hi": "सुकन्या समृद्धि योजना",
+    "category": "Women & Girl Child",
+    "short_desc_en": "A high-interest savings scheme for the education and marriage expenses of a girl child, opened by a parent or guardian.",
+    "short_desc_hi": "बालिका की शिक्षा और विवाह के लिए माता-पिता/अभिभावक द्वारा खोली जाने वाली उच्च-ब्याज बचत योजना।",
+    "ministry": "Ministry of Finance",
+    "eligibility": {
+      "min_age": 0,
+      "max_age": 10,
+      "gender": "female",
+      "max_income_annual": null,
+      "occupations": [
+        "Any"
+      ],
+      "states": [
+        "All"
+      ],
+      "social_categories": [
+        "Any"
+      ]
+    },
+    "documents": [
+      "Girl child's birth certificate",
+      "Aadhaar card of girl child and guardian",
+      "Guardian's identity and address proof",
+      "Passport-size photographs"
+    ],
+    "apply_steps": [
+      "Visit any post office or authorised bank branch.",
+      "Fill the Sukanya Samriddhi account opening form.",
+      "Submit documents and deposit the minimum opening amount (₹250).",
+      "Continue annual deposits until the girl turns 14, account matures at 21."
+    ],
+    "source": {
+      "name": "India Post",
+      "url": "https://www.indiapost.gov.in/Financial/Pages/Content/Sukanya-Samriddhi-Account.aspx"
+    }
+  },
+  {
+    "id": "post-matric-scholarship",
+    "name_en": "Post-Matric Scholarship for SC/ST/OBC/Minority Students",
+    "name_hi": "एससी/एसटी/ओबीसी/अल्पसंख्यक छात्रों के लिए पोस्ट-मैट्रिक छात्रवृत्ति",
+    "category": "Student",
+    "short_desc_en": "Financial assistance covering tuition, maintenance and other fees for students from SC, ST, OBC or minority communities studying after Class 10.",
+    "short_desc_hi": "कक्षा 10 के बाद पढ़ाई कर रहे एससी, एसटी, ओबीसी या अल्पसंख्यक छात्रों के लिए ट्यूशन व अन्य शुल्क में सहायता।",
+    "ministry": "Ministry of Social Justice & Empowerment / Ministry of Minority Affairs",
+    "eligibility": {
+      "min_age": null,
+      "max_age": null,
+      "gender": null,
+      "max_income_annual": 250000,
+      "occupations": [
+        "student"
+      ],
+      "states": [
+        "All"
+      ],
+      "social_categories": [
+        "SC",
+        "ST",
+        "OBC",
+        "Minority",
+        "EWS"
+      ]
+    },
+    "documents": [
+      "Caste/community certificate",
+      "Income certificate",
+      "Previous year mark sheet",
+      "Bonafide/admission certificate from institution",
+      "Aadhaar-linked bank account"
+    ],
+    "apply_steps": [
+      "Register on the National Scholarship Portal (scholarships.gov.in).",
+      "Fill in personal, academic and bank details.",
+      "Upload caste and income certificates.",
+      "Get the application verified by your institution and district authority."
+    ],
+    "source": {
+      "name": "National Scholarship Portal",
+      "url": "https://scholarships.gov.in"
+    }
+  },
+  {
+    "id": "mudra-yojana",
+    "name_en": "Pradhan Mantri Mudra Yojana (PMMY)",
+    "name_hi": "प्रधानमंत्री मुद्रा योजना",
+    "category": "Business / Self-Employment",
+    "short_desc_en": "Collateral-free loans up to ₹20 lakh for micro and small business units under Shishu, Kishor and Tarun categories.",
+    "short_desc_hi": "शिशु, किशोर और तरुण श्रेणियों में सूक्ष्म व लघु उद्यमों के लिए ₹20 लाख तक का बिना गारंटी ऋण।",
+    "ministry": "Ministry of Finance",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": null,
+      "gender": null,
+      "max_income_annual": null,
+      "occupations": [
+        "business"
+      ],
+      "states": [
+        "All"
+      ],
+      "social_categories": [
+        "Any"
+      ]
+    },
+    "documents": [
+      "Aadhaar and PAN card",
+      "Business plan or proof of existing business",
+      "Address proof of business",
+      "Passport-size photographs",
+      "Bank statements (for existing businesses)"
+    ],
+    "apply_steps": [
+      "Prepare a brief business plan and estimate loan requirement.",
+      "Approach any nationalised bank, RRB, cooperative bank or NBFC, or apply via udyamimitra.in.",
+      "Submit the Mudra loan application with KYC and business documents.",
+      "On approval, receive the Mudra Card linked to your loan account."
+    ],
+    "source": {
+      "name": "mudra.org.in",
+      "url": "https://www.mudra.org.in"
+    }
+  },
+  {
+    "id": "atal-pension",
+    "name_en": "Atal Pension Yojana (APY)",
+    "name_hi": "अटल पेंशन योजना",
+    "category": "Pension",
+    "short_desc_en": "A guaranteed monthly pension of ₹1,000–₹5,000 after age 60 for workers in the unorganised sector.",
+    "short_desc_hi": "असंगठित क्षेत्र के श्रमिकों के लिए 60 वर्ष की आयु के बाद ₹1,000–₹5,000 की गारंटीशुदा मासिक पेंशन।",
+    "ministry": "Ministry of Finance (PFRDA)",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": 40,
+      "gender": null,
+      "max_income_annual": null,
+      "occupations": [
+        "unorganized_worker",
+        "business",
+        "job_seeker"
+      ],
+      "states": [
+        "All"
+      ],
+      "social_categories": [
+        "Any"
+      ]
+    },
+    "documents": [
+      "Aadhaar card",
+      "Savings bank account or post office savings account",
+      "Mobile number"
+    ],
+    "apply_steps": [
+      "Visit your bank branch or post office where you hold a savings account.",
+      "Fill the APY registration form and choose your pension amount.",
+      "Set up auto-debit for monthly, quarterly or half-yearly contributions.",
+      "Nominate a beneficiary for the pension account."
+    ],
+    "source": {
+      "name": "npscra.nsdl.co.in",
+      "url": "https://npscra.nsdl.co.in/scheme-details.php"
+    }
+  },
+  {
+    "id": "ujjwala-yojana",
+    "name_en": "Pradhan Mantri Ujjwala Yojana (PMUY)",
+    "name_hi": "प्रधानमंत्री उज्ज्वला योजना",
+    "category": "Women & Household",
+    "short_desc_en": "Free LPG gas connection with financial support for the first cylinder and stove, for women from low-income households.",
+    "short_desc_hi": "निम्न आय वर्ग की महिलाओं को पहले सिलेंडर व चूल्हे के लिए सहायता सहित निःशुल्क एलपीजी कनेक्शन।",
+    "ministry": "Ministry of Petroleum & Natural Gas",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": null,
+      "gender": "female",
+      "max_income_annual": 300000,
+      "occupations": [
+        "Any"
+      ],
+      "states": [
+        "All"
+      ],
+      "social_categories": [
+        "Any"
+      ]
+    },
+    "documents": [
+      "Aadhaar card",
+      "Ration card or BPL certificate",
+      "Bank account passbook",
+      "Passport-size photograph"
+    ],
+    "apply_steps": [
+      "Visit the nearest LPG distributor (Indane/Bharat Gas/HP Gas) or apply online.",
+      "Fill Form KYC for a new PMUY connection.",
+      "Submit Aadhaar, address proof and BPL/ration card.",
+      "Collect the new connection once verified by the distributor."
+    ],
+    "source": {
+      "name": "pmuy.gov.in",
+      "url": "https://www.pmuy.gov.in"
+    }
+  },
+  {
+    "id": "fasal-bima",
+    "name_en": "Pradhan Mantri Fasal Bima Yojana (PMFBY)",
+    "name_hi": "प्रधानमंत्री फसल बीमा योजना",
+    "category": "Farmer",
+    "short_desc_en": "Low-premium crop insurance protecting farmers against crop loss from natural calamities, pests or disease.",
+    "short_desc_hi": "प्राकृतिक आपदा, कीट या रोग से फसल हानि पर किसानों को कम प्रीमियम पर बीमा सुरक्षा।",
+    "ministry": "Ministry of Agriculture & Farmers Welfare",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": null,
+      "gender": null,
+      "max_income_annual": null,
+      "occupations": [
+        "farmer"
+      ],
+      "states": [
+        "All"
+      ],
+      "social_categories": [
+        "Any"
+      ]
+    },
+    "documents": [
+      "Aadhaar card",
+      "Land records (Khatauni/Khasra)",
+      "Bank account details",
+      "Sowing certificate/declaration"
+    ],
+    "apply_steps": [
+      "Apply through your bank (if you have a crop loan) or visit pmfby.gov.in.",
+      "Select the crop and season for which you want cover.",
+      "Pay your share of the premium (as low as 1.5–5% of sum insured).",
+      "Report crop loss within 72 hours of the event to claim compensation."
+    ],
+    "source": {
+      "name": "pmfby.gov.in",
+      "url": "https://pmfby.gov.in"
+    }
+  },
+  {
+    "id": "stand-up-india",
+    "name_en": "Stand-Up India",
+    "name_hi": "स्टैंड-अप इंडिया",
+    "category": "Business / Self-Employment",
+    "short_desc_en": "Bank loans between ₹10 lakh and ₹1 crore for setting up a new (greenfield) enterprise, for SC/ST and women entrepreneurs.",
+    "short_desc_hi": "एससी/एसटी और महिला उद्यमियों के लिए नया उद्यम शुरू करने हेतु ₹10 लाख से ₹1 करोड़ तक का बैंक ऋण।",
+    "ministry": "Ministry of Finance",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": null,
+      "gender": null,
+      "max_income_annual": null,
+      "occupations": [
+        "business"
+      ],
+      "states": [
+        "All"
+      ],
+      "social_categories": [
+        "SC",
+        "ST",
+        "Women"
+      ]
+    },
+    "documents": [
+      "Aadhaar and PAN card",
+      "Caste certificate (for SC/ST applicants)",
+      "Detailed project report for the proposed enterprise",
+      "Address and identity proof",
+      "Bank account details"
+    ],
+    "apply_steps": [
+      "Prepare a project report for your greenfield enterprise idea.",
+      "Apply online via standupmitra.in or visit the nearest bank branch.",
+      "Submit KYC, caste certificate (if applicable) and project documents.",
+      "Attend the bank's appraisal and handholding sessions before disbursal."
+    ],
+    "source": {
+      "name": "standupmitra.in",
+      "url": "https://www.standupmitra.in"
+    }
+  },
+  {
+    "id": "shram-yogi-maandhan",
+    "name_en": "Pradhan Mantri Shram Yogi Maan-dhan (PM-SYM)",
+    "name_hi": "प्रधानमंत्री श्रम योगी मानधन योजना",
+    "category": "Pension",
+    "short_desc_en": "A voluntary pension scheme guaranteeing ₹3,000 per month after age 60 for unorganised sector workers.",
+    "short_desc_hi": "असंगठित क्षेत्र के श्रमिकों के लिए 60 वर्ष की आयु के बाद ₹3,000 प्रति माह की गारंटीशुदा पेंशन।",
+    "ministry": "Ministry of Labour & Employment",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": 40,
+      "gender": null,
+      "max_income_annual": 180000,
+      "occupations": [
+        "unorganized_worker",
+        "business",
+        "job_seeker"
+      ],
+      "states": [
+        "All"
+      ],
+      "social_categories": [
+        "Any"
+      ]
+    },
+    "documents": [
+      "Aadhaar card",
+      "Savings bank account/Jan Dhan account number with IFSC",
+      "Mobile number"
+    ],
+    "apply_steps": [
+      "Visit the nearest Common Service Centre (CSC).",
+      "Carry your Aadhaar card and bank passbook.",
+      "Complete registration and set your monthly contribution (₹55–₹200 based on age).",
+      "Receive your Shram Yogi card after enrolment."
+    ],
+    "source": {
+      "name": "maandhan.in",
+      "url": "https://maandhan.in"
+    }
+  },
+  {
+    "id": "nmms-scholarship",
+    "name_en": "National Means-cum-Merit Scholarship (NMMS)",
+    "name_hi": "राष्ट्रीय साधन-सह-योग्यता छात्रवृत्ति योजना",
+    "category": "Student",
+    "short_desc_en": "₹12,000 per year for meritorious students from economically weaker sections to prevent dropout at the secondary stage (Class 9–12).",
+    "short_desc_hi": "आर्थिक रूप से कमजोर वर्ग के मेधावी छात्रों को कक्षा 9-12 में पढ़ाई जारी रखने हेतु ₹12,000 प्रति वर्ष।",
+    "ministry": "Ministry of Education",
+    "eligibility": {
+      "min_age": null,
+      "max_age": null,
+      "gender": null,
+      "max_income_annual": 350000,
+      "occupations": [
+        "student"
+      ],
+      "states": [
+        "All"
+      ],
+      "social_categories": [
+        "Any"
+      ]
+    },
+    "documents": [
+      "Income certificate of parents/guardian",
+      "Previous class mark sheet (minimum 55% required)",
+      "Caste certificate (if applicable)",
+      "Bank account of the student (Aadhaar-linked)"
+    ],
+    "apply_steps": [
+      "Check if your state is conducting the NMMS selection test this year.",
+      "Register through your school or the state education department portal.",
+      "Appear for the NMMS selection test (MAT + SAT).",
+      "On qualifying, submit income and academic documents for scholarship disbursal."
+    ],
+    "source": {
+      "name": "scholarships.gov.in",
+      "url": "https://scholarships.gov.in"
+    }
+  }
+]
