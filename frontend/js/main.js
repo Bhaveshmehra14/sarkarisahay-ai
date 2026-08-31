@@ -25,6 +25,17 @@ const SSAI = (() => {
       empty_title: "No schemes matched yet",
       empty_body: "Try widening your income range or double-check your occupation and state.",
       back_to_results: "Back to results",
+      chat_toggle_label: "Ask about your schemes",
+      chat_title: "Scheme assistant",
+      chat_subtitle: "Answers are grounded only in your matched results — nothing invented.",
+      chat_q_why: "Why am I eligible?",
+      chat_q_best: "Which scheme is best for me?",
+      chat_q_docs: "What documents do I need?",
+      chat_q_apply: "How do I apply?",
+      chat_placeholder: "Type your question…",
+      chat_send: "Send",
+      chat_greeting: "Hi! I can explain your matched schemes — ask me why you're eligible, which one is best, what documents you need, or how to apply.",
+      chat_error: "Sorry, I couldn't reach the assistant right now. Please try again in a moment.",
     },
     hi: {
       tagline: "सरकारी योजनाएं, ईमानदारी से समझाई गईं",
@@ -45,6 +56,17 @@ const SSAI = (() => {
       empty_title: "अभी कोई योजना नहीं मिली",
       empty_body: "अपनी आय सीमा बढ़ाकर देखें या व्यवसाय व राज्य दोबारा जांचें।",
       back_to_results: "परिणामों पर वापस जाएं",
+      chat_toggle_label: "अपनी योजनाओं के बारे में पूछें",
+      chat_title: "योजना सहायक",
+      chat_subtitle: "जवाब केवल आपके मिलान परिणामों पर आधारित हैं — कुछ भी गढ़ा नहीं गया।",
+      chat_q_why: "मैं पात्र क्यों हूं?",
+      chat_q_best: "मेरे लिए कौन सी योजना सबसे अच्छी है?",
+      chat_q_docs: "मुझे कौन से दस्तावेज़ चाहिए?",
+      chat_q_apply: "मैं कैसे आवेदन करूं?",
+      chat_placeholder: "अपना सवाल लिखें…",
+      chat_send: "भेजें",
+      chat_greeting: "नमस्ते! मैं आपकी मिलान की गई योजनाएं समझा सकता हूं — पूछें कि आप पात्र क्यों हैं, कौन सी योजना बेहतर है, कौन से दस्तावेज़ चाहिए, या आवेदन कैसे करें।",
+      chat_error: "क्षमा करें, अभी सहायक तक नहीं पहुंच सका। कृपया थोड़ी देर बाद फिर कोशिश करें।",
     },
   };
 
@@ -69,6 +91,9 @@ const SSAI = (() => {
     document.body.toggleAttribute("data-lang-hi", lang === "hi");
     document.querySelectorAll("[data-i18n]").forEach((el) => {
       el.textContent = t(el.getAttribute("data-i18n"));
+    });
+    document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+      el.setAttribute("placeholder", t(el.getAttribute("data-i18n-placeholder")));
     });
     document.querySelectorAll(".lang-toggle button").forEach((btn) => {
       btn.classList.toggle("active", btn.dataset.lang === lang);

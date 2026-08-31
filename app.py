@@ -11,6 +11,12 @@ A small Flask app that:
      language — the model is only ever given facts from schemes.json and is
      instructed not to invent anything beyond that, which is what keeps the
      "AI-Powered Matching" step honest instead of hallucinated.
+  4. Exposes a grounded AI chatbot ("/api/chat") on the results page that
+     answers follow-up questions ("Why am I eligible?", "Which scheme is
+     best for me?", "What documents do I need?", "How do I apply?") using
+     ONLY the applicant's profile plus the schemes already matched by the
+     same rule-based engine — never inventing schemes, criteria, benefits,
+     documents or links.
 
 Run locally:
     pip install -r requirements.txt
@@ -42,6 +48,11 @@ CORS(app)
 with open(SCHEMES_PATH, "r", encoding="utf-8") as f:
     SCHEMES = json.load(f)
 
+# Fast lookup used by both the /api/scheme/<id> route and the chatbot context
+# builder below — schemes.json (loaded once, above) remains the single
+# source of truth for every scheme fact used anywhere in this app.
+SCHEME_BY_ID = {s["id"]: s for s in SCHEMES}
+
 OCCUPATION_LABELS = {
     "farmer": "Farmer",
     "student": "Student",
@@ -58,7 +69,9 @@ OCCUPATION_LABELS = {
 
 
 # ---------------------------------------------------------------------------
-# Rule-based matching
+# Rule-based matching (UNCHANGED — this remains the sole source of truth for
+# every eligibility decision; the chatbot below only ever reads its output,
+# it never re-decides or overrides eligibility itself)
 # ---------------------------------------------------------------------------
 def scheme_score(user: dict, scheme: dict):
     """
@@ -171,14 +184,30 @@ def match_schemes(user: dict, include_partial=True, limit=8):
     return scored[:limit]
 
 
+def normalise_user(user: dict) -> dict:
+    """Shared numeric-field coercion used by both /api/match and /api/chat."""
+    user = dict(user or {})
+    for key in ("age", "income_annual"):
+        if user.get(key) not in (None, ""):
+            try:
+                user[key] = float(user[key])
+            except (TypeError, ValueError):
+                user[key] = None
+    return user
+
+
+def lang_instruction(language: str) -> str:
+    return {
+        "hi": "Write every explanation and summary in simple, conversational Hindi (Devanagari script).",
+        "hinglish": "Write every explanation and summary in Hinglish (Hindi written in Roman/English script, casual tone).",
+    }.get(language, "Write every explanation and summary in simple, plain English.")
+
+
 # ---------------------------------------------------------------------------
 # AI explanation layer (grounded on matched scheme data only)
 # ---------------------------------------------------------------------------
 def build_prompt(user: dict, matches: list, language: str):
-    lang_line = {
-        "hi": "Write every explanation and summary in simple, conversational Hindi (Devanagari script).",
-        "hinglish": "Write every explanation and summary in Hinglish (Hindi written in Roman/English script, casual tone).",
-    }.get(language, "Write every explanation and summary in simple, plain English.")
+    lang_line = lang_instruction(language)
 
     payload = {
         "applicant": {k: v for k, v in user.items() if v not in (None, "")},
@@ -259,6 +288,152 @@ def fallback_explanations(matches: list, language: str):
 
 
 # ---------------------------------------------------------------------------
+# Chatbot layer (results page) — grounded on the SAME rule-engine output.
+#
+# The bot is never given free rein: for every scheme it discusses it is
+# handed the exact scheme record from data/schemes.json plus the
+# deterministic reasons/gaps that scheme_score() already computed for this
+# applicant. It is instructed to answer only from that JSON and to say so
+# plainly when something isn't in it, instead of guessing.
+# ---------------------------------------------------------------------------
+CHAT_SYSTEM_PROMPT_TEMPLATE = """You are the SarkariSahay AI assistant, helping an Indian citizen \
+understand the government welfare schemes they were just matched with on the results page.
+
+You must answer ONLY using the JSON context below. It contains the applicant's profile and \
+their matched schemes exactly as produced by a deterministic, rule-based eligibility engine — \
+that engine, not you, is the source of truth for every eligibility decision.
+
+STRICT RULES — follow all of them:
+1. NEVER invent, guess, or assume a scheme name, eligibility rule, benefit amount, document, \
+   ministry, deadline, fee, or application link that is not explicitly present in the context JSON.
+2. If the user asks about a scheme, document, or detail that is not present in the context, say \
+   plainly that it isn't among their matched schemes/information, and suggest they re-check the \
+   "official_source" link for that scheme (only if present) or fill in the eligibility form again \
+   for a fresh match.
+3. When explaining why someone is or isn't eligible, use the "matched_reasons" and "gaps" fields \
+   already computed for them — do not recompute eligibility or contradict the engine's verdict \
+   ("eligible_for_this_user").
+4. When asked which scheme is "best", reason using "eligible_for_this_user", "match_score", and \
+   how many/severe the "gaps" are — do not invent a different ranking criterion.
+5. When asked about documents or how to apply, list only items from that scheme's \
+   "documents_required" / "apply_steps" — do not add anything else.
+6. {lang_line}
+7. Keep answers conversational and concise (aim for well under 150 words unless the user asks for \
+   a full list), in plain language a first-time applicant can follow.
+8. You are not a lawyer, accountant, or government official — do not give legal, tax, or financial \
+   advice beyond what's in the scheme data, and don't promise approval or timelines.
+
+CONTEXT (JSON):
+{context_json}
+"""
+
+
+def build_chat_context(user: dict, scheme_ids: list):
+    """Re-derives grounded, per-scheme facts for the chatbot using the exact
+    same rule engine (scheme_score) and the exact same schemes.json records
+    used everywhere else in the app — nothing here is model-generated."""
+    context_schemes = []
+    for sid in scheme_ids:
+        scheme = SCHEME_BY_ID.get(sid)
+        if not scheme:
+            continue
+        eligible, score, reasons, gaps = scheme_score(user, scheme)
+        context_schemes.append(
+            {
+                "id": scheme["id"],
+                "name": scheme["name_en"],
+                "category": scheme["category"],
+                "ministry": scheme.get("ministry"),
+                "official_description": scheme["short_desc_en"],
+                "eligibility_criteria": scheme["eligibility"],
+                "documents_required": scheme["documents"],
+                "apply_steps": scheme["apply_steps"],
+                "official_source": scheme["source"],
+                "eligible_for_this_user": eligible,
+                "match_score": score,
+                "matched_reasons": reasons,
+                "gaps": gaps,
+            }
+        )
+    return context_schemes
+
+
+def call_anthropic_chat(system_prompt: str, history: list, message: str) -> str:
+    """Calls the Anthropic API for a chat turn. Raises on failure so the
+    caller can fall back to the offline templated responder."""
+    import anthropic
+
+    client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
+
+    messages = []
+    for turn in history[-10:]:  # cap context sent per turn
+        role = turn.get("role")
+        content = turn.get("content")
+        if role in ("user", "assistant") and isinstance(content, str) and content.strip():
+            messages.append({"role": role, "content": content.strip()[:4000]})
+    messages.append({"role": "user", "content": message})
+
+    resp = client.messages.create(
+        model=MODEL_NAME,
+        max_tokens=800,
+        system=system_prompt,
+        messages=messages,
+    )
+    return "".join(block.text for block in resp.content if block.type == "text").strip()
+
+
+def fallback_chat_response(message: str, context_schemes: list, language: str) -> str:
+    """Offline, templated chatbot answers used when no API key is configured
+    or the API call fails — keeps the chat panel useful even without a key,
+    using only the same grounded scheme data."""
+    if not context_schemes:
+        return (
+            "मुझे अभी कोई मिलान योजना नहीं दिख रही — कृपया पहले फ़ॉर्म भरें।"
+            if language == "hi"
+            else "I don't have any matched schemes to discuss yet — please fill in the eligibility "
+            "form first, then come back and ask me about your results."
+        )
+
+    msg = message.lower()
+    lines = []
+
+    if any(k in msg for k in ("document", "paper", "kyc", "proof")):
+        for s in context_schemes:
+            lines.append(f"{s['name']}: " + ", ".join(s["documents_required"]))
+        return "Documents needed:\n" + "\n".join(lines)
+
+    if any(k in msg for k in ("apply", "how do i", "process", "steps", "register")):
+        for s in context_schemes:
+            steps = " → ".join(s["apply_steps"])
+            lines.append(f"{s['name']}: {steps}")
+        return "How to apply:\n" + "\n".join(lines)
+
+    if any(k in msg for k in ("best", "which scheme", "recommend", "should i")):
+        best = max(context_schemes, key=lambda s: (s["eligible_for_this_user"], s["match_score"]))
+        return (
+            f"Based on your matched results, {best['name']} looks like the strongest option for you "
+            f"(match confidence {round(best['match_score'] * 100)}%, "
+            f"{'fully eligible' if best['eligible_for_this_user'] else 'partial match'}). "
+            f"Check its documents and apply steps below."
+        )
+
+    if any(k in msg for k in ("why", "eligible", "qualify", "criteria")):
+        for s in context_schemes:
+            reason_text = "; ".join(s["matched_reasons"]) or "no specific matched reasons recorded"
+            gap_text = "; ".join(s["gaps"]) if s["gaps"] else "no gaps"
+            lines.append(f"{s['name']}: {reason_text}. Gaps: {gap_text}")
+        return "\n".join(lines)
+
+    names = ", ".join(s["name"] for s in context_schemes)
+    return (
+        f"I can help explain your matched schemes ({names}). Ask me why you're eligible, which one "
+        f"is best for you, what documents you need, or how to apply. (Note: AI-generated answers are "
+        f"offline right now since no ANTHROPIC_API_KEY is configured — these are basic answers pulled "
+        f"directly from your matched scheme data.)"
+    )
+
+
+# ---------------------------------------------------------------------------
 # Routes
 # ---------------------------------------------------------------------------
 @app.get("/api/schemes")
@@ -268,16 +443,8 @@ def list_schemes():
 
 @app.post("/api/match")
 def api_match():
-    user = request.get_json(force=True) or {}
+    user = normalise_user(request.get_json(force=True) or {})
     language = user.get("language", "en")
-
-    # normalise numeric fields
-    for key in ("age", "income_annual"):
-        if user.get(key) not in (None, ""):
-            try:
-                user[key] = float(user[key])
-            except (TypeError, ValueError):
-                user[key] = None
 
     matches = match_schemes(user)
 
@@ -317,6 +484,69 @@ def api_match():
         )
 
     return jsonify({"matches": results, "ai_used": ai_used})
+
+
+@app.post("/api/chat")
+def api_chat():
+    """Grounded chatbot for the results page.
+
+    Expected JSON body:
+      {
+        "message": "Why am I eligible?",
+        "profile": { ...same shape as /api/match input... },
+        "scheme_ids": ["pm-kisan", "..."],   // ids of the schemes shown to this user
+        "history": [{"role": "user"|"assistant", "content": "..."}, ...],  // optional
+        "language": "en" | "hi" | "hinglish"                              // optional
+      }
+    """
+    body = request.get_json(force=True) or {}
+
+    message = (body.get("message") or "").strip()
+    if not message:
+        return jsonify({"error": "message is required"}), 400
+    message = message[:2000]  # basic guardrail against oversized input
+
+    user = normalise_user(body.get("profile") or {})
+    language = body.get("language") or user.get("language") or "en"
+
+    scheme_ids = body.get("scheme_ids") or []
+    if not scheme_ids and body.get("matches"):
+        # Convenience: accept the /api/match response shape directly too.
+        scheme_ids = [m.get("id") for m in body["matches"] if m.get("id")]
+
+    history = body.get("history") or []
+    if not isinstance(history, list):
+        history = []
+
+    context_schemes = build_chat_context(user, scheme_ids)
+
+    ai_used = False
+    try:
+        if not ANTHROPIC_API_KEY:
+            raise RuntimeError("No ANTHROPIC_API_KEY configured")
+        if not context_schemes:
+            raise RuntimeError("No matched schemes in context")
+
+        context_json = json.dumps(
+            {
+                "applicant": {k: v for k, v in user.items() if v not in (None, "")},
+                "matched_schemes": context_schemes,
+            },
+            ensure_ascii=False,
+        )
+        system_prompt = CHAT_SYSTEM_PROMPT_TEMPLATE.format(
+            lang_line=lang_instruction(language),
+            context_json=context_json,
+        )
+        reply = call_anthropic_chat(system_prompt, history, message)
+        if not reply:
+            raise RuntimeError("Empty response from model")
+        ai_used = True
+    except Exception as exc:  # noqa: BLE001 — any failure falls back gracefully
+        app.logger.warning("Chat falling back to templated response: %s", exc)
+        reply = fallback_chat_response(message, context_schemes, language)
+
+    return jsonify({"reply": reply, "ai_used": ai_used})
 
 
 @app.get("/api/scheme/<scheme_id>")

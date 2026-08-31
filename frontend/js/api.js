@@ -20,5 +20,17 @@ const SSAI_API = (() => {
     return res.json();
   }
 
-  return { matchSchemes, getScheme };
+  // Chatbot on the results page. `payload` shape:
+  // { message, profile, scheme_ids, history, language }
+  async function sendChatMessage(payload) {
+    const res = await fetch(`${BASE}/api/chat`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) throw new Error(`Chat request failed (${res.status})`);
+    return res.json();
+  }
+
+  return { matchSchemes, getScheme, sendChatMessage };
 })();
